@@ -1,70 +1,43 @@
-import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
-import { Link } from "react-router";
 import MovieCard from "./components/MovieCard";
+import {
+  fetchMovies,
+  selectFilteredMovies,
+  setQuery,
+  setSearchValue,
+  type Movie,
+} from "./store/movieSlice";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 
-interface Movie {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
+import { useEffect } from "react";
+import Filters from "./components/Filters";
+
 function App() {
-  const [searchValue, setSearchValue] = useState("");
-  const [query, setQuery] = useState("");
-  const [result, setResult] = useState([]);
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
-    },
-  };
+  const dispatch = useAppDispatch();
+  const { searchValue, loading } = useAppSelector((state) => state.movies);
+  const movies = useAppSelector(selectFilteredMovies);
 
-  const getData = async () => {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${query}`,
-        options
-      );
-      const data = await res.json();
-      setResult(data.results || []);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    if (!query) return;
-    getData();
-  }, [query]);
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    dispatch(setSearchValue(e.target.value));
   };
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setQuery(searchValue);
+    dispatch(setQuery(searchValue));
+    dispatch(fetchMovies({ query: searchValue }));
   };
-
-  const searchedMovies = result.map((movie: Movie) => {
+  useEffect(() => {
+    if (!movies.length) {
+      dispatch(fetchMovies({ query: "" }));
+    }
+  }, [dispatch, movies.length]);
+  const searchedMovies = movies.map((movie: Movie) => {
     //  const backdrop_path = <img
     //     className="w-full"
     //       src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
     //       alt={movie.backdrop_path}
     //     />
-    return (
-      <MovieCard key={movie.id} movie={movie}/>
-    );
+    return <MovieCard key={movie.id} movie={movie} />;
   });
 
   return (
@@ -86,9 +59,15 @@ function App() {
             Search
           </Button>
         </form>
+        <div className="flex gap-4 mt-14">
+          <aside className="w-1/5">
+            <Filters />
+          </aside>
 
-        <div className="p-4 flex flex-wrap justify-center gap-4">
-          {searchedMovies}
+          <main className="w-4/5 p-4 flex flex-wrap justify-center gap-4">
+            {loading && <div>Loading...</div>}
+            {searchedMovies}
+          </main>
         </div>
       </div>
     </>
