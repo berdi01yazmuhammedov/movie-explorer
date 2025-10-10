@@ -1,35 +1,35 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from ".";
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import type { RootState } from '.';
 const options = {
-    method: "GET",
+    method: 'GET',
     headers: {
-        accept: "application/json",
+        accept: 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
     },
 };
 
-export const fetchMovies = createAsyncThunk("movies/fetchMovies",
+export const fetchMovies = createAsyncThunk(
+    'movies/fetchMovies',
     async ({ query }: { query: string }, { rejectWithValue }) => {
-
         try {
             const params = new URLSearchParams();
-            let url = "";
+            let url = '';
             if (query) {
-                params.append("query", query);
+                params.append('query', query);
                 url = `https://api.themoviedb.org/3/search/movie?${params.toString()}`;
             } else {
                 url = `https://api.themoviedb.org/3/discover/movie?sort_by=release_date.desc&${params.toString()}`;
             }
 
             const res = await fetch(url, options);
-            if (!res.ok) throw new Error("Failed to fetch movies");
+            if (!res.ok) throw new Error('Failed to fetch movies');
             const data = await res.json();
             return data.results;
         } catch (error: string | any) {
             return rejectWithValue(error.message);
         }
-
-    })
+    }
+);
 
 export const selectFilteredMovies = createSelector(
     (state: RootState) => state.movies.result,
@@ -47,26 +47,40 @@ export const selectFilteredMovies = createSelector(
             filtered = filtered.filter((m) => {
                 const release = parseInt(m.release_date?.slice(0, 4));
                 return release >= start && release <= end;
-            })
+            });
         }
 
-        if (filters.sortBy === "rating") {
+        if (filters.sortBy === 'rating') {
             filtered.sort((a, b) => b.vote_average - a.vote_average);
-        } else if (filters.sortBy === "release_date") {
+        } else if (filters.sortBy === 'release_date') {
             filtered.sort(
                 (a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
-            )
-        } else if (filters.sortBy === "popularity") {
-            filtered.sort((a, b) => b.popularity - a.popularity)
+            );
+        } else if (filters.sortBy === 'popularity') {
+            filtered.sort((a, b) => b.popularity - a.popularity);
         }
 
         return filtered;
     }
-)
+);
+export const fetchMovieById = createAsyncThunk(
+    'movies/fetchMovieById',
+    async ({ id }: { id: number }, { rejectWithValue }) => {
+        try {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options);
+            if (!res.ok) throw new Error('Failed to fetch movie');
+            const data = await res.json();
+            return data;
+        } catch (error: string | any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 interface Filters {
-    genre: number | null,
-    year: string | null,
-    sortBy: "popularity" | "rating" | "release_date" | null;
+    genre: number | null;
+    year: string | null;
+    sortBy: 'popularity' | 'rating' | 'release_date' | null;
 }
 export interface Movie {
     adult: boolean;
@@ -85,28 +99,30 @@ export interface Movie {
     vote_count: number;
 }
 interface initialState {
-    searchValue: string,
-    query: string,
-    result: Movie[],
-    loading: boolean,
-    error: string | null,
-    filters: Filters
+    searchValue: string;
+    query: string;
+    result: Movie[];
+    currentMovie: Movie | null;
+    loading: boolean;
+    error: string | null;
+    filters: Filters;
 }
 const initialState: initialState = {
-    searchValue: "",
-    query: "",
+    searchValue: '',
+    query: '',
     result: [],
+    currentMovie: null,
     loading: false,
     error: null,
     filters: {
         genre: null,
         year: null,
-        sortBy: "popularity",
-    }
-}
+        sortBy: 'popularity',
+    },
+};
 
 const movieSlice = createSlice({
-    name: "movie",
+    name: 'movie',
     initialState,
     reducers: {
         setSearchValue(state, action) {
@@ -132,7 +148,6 @@ const movieSlice = createSlice({
             if (state.filters[key] === value) {
                 state.filters[key] = null as Filters[K];
             } else {
-
                 state.filters[key] = value;
             }
         },
@@ -141,9 +156,8 @@ const movieSlice = createSlice({
                 genre: null,
                 year: null,
                 sortBy: null,
-            }
-        }
-
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -159,8 +173,28 @@ const movieSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-    }
-})
+            
+            .addCase(fetchMovieById.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchMovieById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentMovie = action.payload;
+            })
+            .addCase(fetchMovieById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+    },
+});
 
-export const { setSearchValue, setQuery, setResult, setLoading, setError, setFilter, clearFilters } = movieSlice.actions;
-export default movieSlice.reducer
+export const {
+    setSearchValue,
+    setQuery,
+    setResult,
+    setLoading,
+    setError,
+    setFilter,
+    clearFilters,
+} = movieSlice.actions;
+export default movieSlice.reducer;

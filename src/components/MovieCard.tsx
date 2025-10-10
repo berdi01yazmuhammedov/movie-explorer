@@ -9,7 +9,6 @@ interface MovieCardProps {
     };
 }
 const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
-  console.log(movie);
   
   return (
     <Link to={`/movie/${movie.id}`}
