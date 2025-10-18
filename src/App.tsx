@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 
 import { useEffect } from 'react';
 import Filters from './components/Filters';
+import Header from './components/Header';
 
 function App() {
     const dispatch = useAppDispatch();
@@ -41,7 +42,8 @@ function App() {
     });
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-gray-100 px-8 py-10">
+        <div className="px-8 py-10">
+            
             <form onSubmit={onFormSubmit} className="flex items-center justify-center gap-2 mb-10">
                 <Input
                     className="w-full max-w-2xl bg-zinc-800 text-gray-200 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-indigo-500"
