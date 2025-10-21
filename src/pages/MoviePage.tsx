@@ -1,3 +1,4 @@
+import Cast from '@/components/Cast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMovieById } from '@/store/movieSlice';
 import { useEffect } from 'react';
@@ -51,7 +52,7 @@ const MoviePage = () => {
                     </div>
                 </div>
             </div>
-
+            <Cast id={movie.id} />
             {/* затемнение снизу для эстетики */}
             <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent"></div>
             <h3 className="text-2xl font-semibold mb-4 mt-8 text-center">Production companies</h3>

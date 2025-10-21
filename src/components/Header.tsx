@@ -17,7 +17,7 @@ const Header = () => {
         dispatch(fetchMovies({ query: searchValue }));
     };
     return (
-        <header className="flex gap-4 p-4 items-center">
+        <header className="flex gap-4 items-center">
             <Link to="/">
                 <h1 className="text-3xl font-bold text-center">Movies</h1>
             </Link>

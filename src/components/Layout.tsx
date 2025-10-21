@@ -8,7 +8,7 @@ const Layout = () => {
       <Header />
       
       {/* контент страниц */}
-      <main className="flex-1 px-8 py-10">
+      <main className="flex-1 py-10">
         <Outlet />
       </main>
     </div>
