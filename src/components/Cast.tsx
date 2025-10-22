@@ -1,10 +1,8 @@
 import { useAppSelector } from '@/store/hooks';
-import React from 'react';
 
 const Cast = () => {
     const fullCast = useAppSelector((state) => state.movies.cast);
     const mainCast = fullCast.slice(0, 6);
-    console.log(mainCast[0].profile_path);
     const filteredCast = mainCast.map((actor) => {
         return (
             <div key={actor.character} className="flex flex-col gap-4 items-center mx-auto">
@@ -20,10 +18,12 @@ const Cast = () => {
     });
 
     return (
-        <div className="max-w-7xl mx-auto  gap-8">
-            <h2 className="text-2xl font-bold mb-8 text-center">Cast</h2>
-            <div className="flex flex-wrap">{filteredCast}</div>
-        </div>
+        <>
+            <div className="max-w-7xl mx-auto gap-8">
+                <h2 className="text-2xl font-bold mb-8 text-center">Cast</h2>
+                <div className="flex flex-wrap">{filteredCast}</div>
+            </div>
+        </>
     );
 };
 

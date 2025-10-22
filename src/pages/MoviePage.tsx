@@ -1,6 +1,8 @@
 import Cast from '@/components/Cast';
+import MovieVideos from '@/components/MovieVideos';
+import RecommendedMovies from '@/components/RecommendedMovies';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchCast, fetchMovieById } from '@/store/movieSlice';
+import { fetchCast, fetchMovieById, fetchMovieVideos, fetchRecommendedMovies } from '@/store/movieSlice';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 
@@ -13,6 +15,8 @@ const MoviePage = () => {
         if (!movie || movie.id !== Number(id)) {
             dispatch(fetchMovieById({ id: Number(id) }));
             dispatch(fetchCast({id: Number(id)}));
+            dispatch(fetchRecommendedMovies({id: Number(id)}))
+            dispatch(fetchMovieVideos({id: Number(id)}))
         }
     }, [id, movie, dispatch]);
 
@@ -53,6 +57,8 @@ const MoviePage = () => {
                 </div>
             </div>
             <Cast />
+            <RecommendedMovies />
+            <MovieVideos />
             {/* затемнение снизу для эстетики */}
             <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent"></div>
             <h3 className="text-2xl font-semibold mb-4 mt-8 text-center">Production companies</h3>

@@ -71,22 +71,62 @@ export const fetchMovieById = createAsyncThunk(
             if (!res.ok) throw new Error('Failed to fetch movie');
             const data = await res.json();
             return data;
-        } catch (error: string | any) { //any type change
+        } catch (error: string | any) {
+            //any type change
             return rejectWithValue(error.message);
         }
     }
 );
-export const fetchCast = createAsyncThunk("movies/fetchCast", 
-    async ({id}: {id: Number}, {rejectWithValue}) => {
+export const fetchCast = createAsyncThunk(
+    'movies/fetchCast',
+    async ({ id }: { id: Number }, { rejectWithValue }) => {
         try {
             const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, options);
-            if(!res.ok) throw new Error('Failed to fetch cast');
+            if (!res.ok) throw new Error('Failed to fetch cast');
             const data = await res.json();
-            return data.cast
-        } catch (error: string | any) { //any type change
-            return rejectWithValue(error.message)
+            return data.cast;
+        } catch (error: string | any) {
+            //any type change
+            return rejectWithValue(error.message);
         }
-    })
+    }
+);
+export const fetchRecommendedMovies = createAsyncThunk(
+    'movies/fetchRecommendedMovies',
+    async ({ id }: { id: number }, { rejectWithValue }) => {
+        try {
+            const res = await fetch(
+                `https://api.themoviedb.org/3/movie/${id}/recommendations`,
+                options
+            );
+            if (!res.ok) throw new Error('Failed to fetch recommended movies');
+            const data = await res.json();
+            return data.results;
+        } catch (error: string | any) {
+            //any type change
+
+            return rejectWithValue(error.message);
+        }
+    }
+);
+export const fetchMovieVideos = createAsyncThunk(
+    'movies/fetchMovieVideos',
+    async ({ id }: { id: number }, { rejectWithValue }) => {
+        try {
+            const res = await fetch(
+                `https://api.themoviedb.org/3/movie/${id}/videos`,
+                options
+            );
+            if (!res.ok) throw new Error('Failed to fetch videos for the movie');
+            const data = await res.json();
+            return data.results;
+        } catch (error: string | any) {
+            //any type change
+
+            return rejectWithValue(error.message);
+        }
+    }
+);
 interface Filters {
     genre: number | null;
     year: string | null;
@@ -170,13 +210,43 @@ interface Cast {
     credit_id: string;
     order: number;
 }
-
+interface RecommendedMovies {
+    adult: boolean;
+    backdrop_path: string | null;
+    id: number;
+    title: string;
+    original_title: string;
+    overview: string;
+    poster_path: string | null;
+    media_type: string;
+    original_language: string;
+    genre_ids: number[];
+    popularity: number;
+    release_date: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
+}
+export interface MovieVideos {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+}
 interface initialState {
     searchValue: string;
     query: string;
     result: Movie[];
     currentMovie: CurrentMovie | null;
     cast: Cast[];
+    recommendedMovies: RecommendedMovies[];
+    movieVideos: MovieVideos[];
     loading: boolean;
     error: string | null;
     filters: Filters;
@@ -187,6 +257,8 @@ const initialState: initialState = {
     result: [],
     currentMovie: null,
     cast: [],
+    recommendedMovies: [],
+    movieVideos: [],
     loading: false,
     error: null,
     filters: {
@@ -268,6 +340,28 @@ const movieSlice = createSlice({
                 state.cast = action.payload;
             })
             .addCase(fetchCast.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(fetchRecommendedMovies.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchRecommendedMovies.fulfilled, (state, action) => {
+                state.loading = false;
+                state.recommendedMovies = action.payload;
+            })
+            .addCase(fetchRecommendedMovies.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(fetchMovieVideos.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchMovieVideos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.movieVideos = action.payload;
+            })
+            .addCase(fetchMovieVideos.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
