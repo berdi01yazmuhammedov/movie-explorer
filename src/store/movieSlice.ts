@@ -71,12 +71,22 @@ export const fetchMovieById = createAsyncThunk(
             if (!res.ok) throw new Error('Failed to fetch movie');
             const data = await res.json();
             return data;
-        } catch (error: string | any) {
+        } catch (error: string | any) { //any type change
             return rejectWithValue(error.message);
         }
     }
 );
-
+export const fetchCast = createAsyncThunk("movies/fetchCast", 
+    async ({id}: {id: Number}, {rejectWithValue}) => {
+        try {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, options);
+            if(!res.ok) throw new Error('Failed to fetch cast');
+            const data = await res.json();
+            return data.cast
+        } catch (error: string | any) { //any type change
+            return rejectWithValue(error.message)
+        }
+    })
 interface Filters {
     genre: number | null;
     year: string | null;
@@ -146,12 +156,27 @@ export interface CurrentMovie {
     vote_average: number;
     vote_count: number;
 }
+interface Cast {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string;
+    cast_id: number;
+    character: string;
+    credit_id: string;
+    order: number;
+}
 
 interface initialState {
     searchValue: string;
     query: string;
     result: Movie[];
     currentMovie: CurrentMovie | null;
+    cast: Cast[];
     loading: boolean;
     error: string | null;
     filters: Filters;
@@ -161,6 +186,7 @@ const initialState: initialState = {
     query: '',
     result: [],
     currentMovie: null,
+    cast: [],
     loading: false,
     error: null,
     filters: {
@@ -233,7 +259,18 @@ const movieSlice = createSlice({
             .addCase(fetchMovieById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-            });
+            })
+            .addCase(fetchCast.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchCast.fulfilled, (state, action) => {
+                state.loading = false;
+                state.cast = action.payload;
+            })
+            .addCase(fetchCast.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
     },
 });
 
