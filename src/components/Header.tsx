@@ -17,7 +17,7 @@ const Header = () => {
         dispatch(fetchMovies({ query: searchValue }));
     };
     return (
-        <header className="flex gap-4 items-center">
+        <header className="flex gap-4 items-center px-4 py-6">
             <Link to="/">
                 <h1 className="text-3xl font-bold text-center">Movies</h1>
             </Link>
@@ -40,6 +40,7 @@ const Header = () => {
                     Search
                 </Button>
             </form>
+            <Link to="/favorites">Favorites</Link>
         </header>
     );
 };

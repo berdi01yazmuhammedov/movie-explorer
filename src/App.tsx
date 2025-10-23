@@ -20,7 +20,7 @@ function App() {
     });
 
     return (
-        <div className="px-8 py-10">
+        <div className="px-6 py-10">
             <div className="flex gap-8 items-start">
                 <aside className="w-[240px] shrink-0 bg-zinc-900 p-5 rounded-xl border border-zinc-800 shadow-lg">
                     <Filters />
