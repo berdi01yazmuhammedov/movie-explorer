@@ -10,24 +10,30 @@ const RecommendedMovies = () => {
                 Recommended Movies
             </h2>
 
-            <div className="flex flex-wrap justify-center gap-8">
-                {recommendedMovies.map((movie) => (
-                    <Link
-                        to={`/movie/${movie.id}`}
-                        key={movie.id}
-                        className="w-40 sm:w-48 md:w-56 flex flex-col items-center text-center bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-md dark:shadow-black/50 hover:shadow-lg hover:scale-105 transition-all duration-300 overflow-hidden"
-                    >
-                        <img
-                            className="w-full h-60 object-cover rounded-t-xl"
-                            src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                            alt={movie.title}
-                        />
-                        <h3 className="p-3 text-sm sm:text-base text-gray-900 dark:text-gray-200 font-medium truncate w-full transition-colors duration-300">
-                            {movie.title}
-                        </h3>
-                    </Link>
-                ))}
-            </div>
+            {recommendedMovies.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400">
+                    No recommended movies found.
+                </p>
+            ) : (
+                <div className="flex flex-wrap justify-center gap-8">
+                    {recommendedMovies.map((movie) => (
+                        <Link
+                            to={`/movie/${movie.id}`}
+                            key={movie.id}
+                            className="w-40 sm:w-48 md:w-56 flex flex-col items-center text-center bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-md dark:shadow-black/50 hover:shadow-lg hover:scale-105 transition-all duration-300 overflow-hidden"
+                        >
+                            <img
+                                className="w-full h-60 object-cover rounded-t-xl"
+                                src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                                alt={movie.title}
+                            />
+                            <h3 className="p-3 text-sm sm:text-base text-gray-900 dark:text-gray-200 font-medium truncate w-full transition-colors duration-300">
+                                {movie.title}
+                            </h3>
+                        </Link>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

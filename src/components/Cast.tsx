@@ -28,7 +28,11 @@ const Cast = () => {
             <h2 className="text-2xl font-bold mb-8 text-center text-gray-900 dark:text-white transition-colors duration-300">
                 Cast
             </h2>
-            <div className="flex flex-wrap gap-6 justify-center">{filteredCast}</div>
+            {fullCast.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400">No cast found.</p>
+            ) : (
+                <div className="flex flex-wrap gap-6 justify-center">{filteredCast}</div>
+            )}
         </div>
     );
 };

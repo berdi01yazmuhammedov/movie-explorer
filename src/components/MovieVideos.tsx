@@ -8,20 +8,24 @@ const MovieVideos = () => {
             <h2 className="text-2xl font-bold mb-8 text-center text-gray-900 dark:text-white transition-colors duration-300">
                 Videos for the movie
             </h2>
-            <div className="flex flex-wrap gap-6 justify-center">
-                {movieVideos.map((video) => (
-                    <iframe
-                        key={video.key}
-                        width="560"
-                        height="315"
-                        src={`https://www.youtube.com/embed/${video.key}`}
-                        title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="rounded-lg shadow-md dark:shadow-black/50 transition-shadow duration-300"
-                    ></iframe>
-                ))}
-            </div>
+            {movieVideos.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400">No videos found.</p>
+            ) : (
+                <div className="flex flex-wrap gap-6 justify-center">
+                    {movieVideos.map((video) => (
+                        <iframe
+                            key={video.key}
+                            width="560"
+                            height="315"
+                            src={`https://www.youtube.com/embed/${video.key}`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            className="rounded-lg shadow-md dark:shadow-black/50 transition-shadow duration-300"
+                        ></iframe>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

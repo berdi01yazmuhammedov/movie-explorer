@@ -34,21 +34,16 @@ const MoviePage = () => {
 
     return (
         <div className="relative bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-            {/* Hero Section */}
             <div className="relative w-full h-screen max-h-[100vh]">
-                {/* Poster Background */}
                 <div
                     className="absolute inset-0 bg-cover bg-center z-0"
                     style={{
                         backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
                     }}
                 />
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-black/30 dark:bg-black/70 z-0" />
 
-                {/* Hero Content */}
                 <div className="relative z-10 max-w-5xl mx-auto p-8 flex flex-col md:flex-row gap-8 h-full items-center">
-                    {/* Poster */}
                     <div className="flex-shrink-0">
                         <img
                             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -57,7 +52,6 @@ const MoviePage = () => {
                         />
                     </div>
 
-                    {/* Movie Info */}
                     <div className="flex flex-col justify-center gap-4 text-center md:text-left">
                         <h1 className="text-3xl md:text-5xl font-bold text-gray-100 dark:text-white transition-colors duration-300">
                             {movie.title}
@@ -78,7 +72,6 @@ const MoviePage = () => {
                 </div>
             </div>
 
-            {/* Sections below hero */}
             <div className="relative z-10 mt-12 max-w-7xl mx-auto px-4">
                 <Cast />
                 <RecommendedMovies />
@@ -90,19 +83,25 @@ const MoviePage = () => {
                 <h3 className="text-2xl font-semibold mb-4 text-center text-gray-100 dark:text-white transition-colors duration-300">
                     Production Companies
                 </h3>
-                <div className="flex gap-4 items-center flex-wrap justify-center bg-white/20 dark:bg-gray-900/50 p-4 rounded-lg shadow-md dark:shadow-black/50 transition-colors duration-300">
-                    {movie.production_companies.map(
-                        (company) =>
-                            company.logo_path && (
-                                <img
-                                    key={company.id}
-                                    src={`https://image.tmdb.org/t/p/w200/${company.logo_path}`}
-                                    alt={company.name}
-                                    className="max-h-12 object-contain"
-                                />
-                            )
-                    )}
-                </div>
+                {movie.production_companies.length === 0 ? (
+                    <p className="text-center text-gray-500 dark:text-gray-400">
+                        No production companies found.
+                    </p>
+                ) : (
+                    <div className="flex gap-4 items-center flex-wrap justify-center bg-white/20 dark:bg-gray-900/50 p-4 rounded-lg shadow-md dark:shadow-black/50 transition-colors duration-300">
+                        {movie.production_companies.map(
+                            (company) =>
+                                company.logo_path && (
+                                    <img
+                                        key={company.id}
+                                        src={`https://image.tmdb.org/t/p/w200/${company.logo_path}`}
+                                        alt={company.name}
+                                        className="max-h-12 object-contain"
+                                    />
+                                )
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* Bottom Fade */}
