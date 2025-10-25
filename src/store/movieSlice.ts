@@ -10,9 +10,10 @@ const options = {
 
 export const fetchMovies = createAsyncThunk(
     'movies/fetchMovies',
-    async ({ query }: { query: string }, { rejectWithValue }) => {
+    async ({ query, page = 1 }: { query: string; page?: number }, { rejectWithValue }) => {
         try {
             const params = new URLSearchParams();
+            params.append('page', page.toString());
             let url = '';
             if (query) {
                 params.append('query', query);
@@ -24,7 +25,11 @@ export const fetchMovies = createAsyncThunk(
             const res = await fetch(url, options);
             if (!res.ok) throw new Error('Failed to fetch movies');
             const data = await res.json();
-            return data.results;
+            return {
+                results: data.results,
+                page: data.page,
+                total_pages: data.total_pages,
+            };
         } catch (error: string | any) {
             return rejectWithValue(error.message);
         }
@@ -113,10 +118,7 @@ export const fetchMovieVideos = createAsyncThunk(
     'movies/fetchMovieVideos',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(
-                `https://api.themoviedb.org/3/movie/${id}/videos`,
-                options
-            );
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos`, options);
             if (!res.ok) throw new Error('Failed to fetch videos for the movie');
             const data = await res.json();
             return data.results;
@@ -228,16 +230,16 @@ interface RecommendedMovies {
     vote_count: number;
 }
 export interface MovieVideos {
-  iso_639_1: string;
-  iso_3166_1: string;
-  name: string;
-  key: string;
-  site: string;
-  size: number;
-  type: string;
-  official: boolean;
-  published_at: string;
-  id: string;
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: string;
+    id: string;
 }
 interface initialState {
     searchValue: string;
@@ -250,6 +252,8 @@ interface initialState {
     loading: boolean;
     error: string | null;
     filters: Filters;
+    page: number;
+    hasMore: boolean;
 }
 const initialState: initialState = {
     searchValue: '',
@@ -266,6 +270,8 @@ const initialState: initialState = {
         year: null,
         sortBy: 'popularity',
     },
+    page: 1,
+    hasMore: true,
 };
 
 const movieSlice = createSlice({
@@ -314,7 +320,14 @@ const movieSlice = createSlice({
             })
             .addCase(fetchMovies.fulfilled, (state, action) => {
                 state.loading = false;
-                state.result = action.payload;
+                const { results, page, total_pages } = action.payload;
+                if (page === 1) {
+                    state.result = results;
+                } else {
+                    state.result = [...state.result, ...results];
+                }
+                state.page = page;
+                state.hasMore = page < total_pages;
             })
             .addCase(fetchMovies.rejected, (state, action) => {
                 state.loading = false;
@@ -364,7 +377,7 @@ const movieSlice = createSlice({
             .addCase(fetchMovieVideos.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-            })
+            });
     },
 });
 
