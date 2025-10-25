@@ -253,6 +253,7 @@ interface initialState {
     error: string | null;
     filters: Filters;
     page: number;
+    total_pages: number;
     hasMore: boolean;
 }
 const initialState: initialState = {
@@ -271,6 +272,7 @@ const initialState: initialState = {
         sortBy: 'popularity',
     },
     page: 1,
+    total_pages: 1,
     hasMore: true,
 };
 
@@ -327,6 +329,7 @@ const movieSlice = createSlice({
                     state.result = [...state.result, ...results];
                 }
                 state.page = page;
+                state.total_pages = total_pages;
                 state.hasMore = page < total_pages;
             })
             .addCase(fetchMovies.rejected, (state, action) => {
