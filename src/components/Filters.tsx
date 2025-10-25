@@ -5,11 +5,13 @@ import { clearFilters, setFilter } from '@/store/movieSlice';
 const Filters = () => {
     const dispatch = useAppDispatch();
     const { filters } = useAppSelector((state) => state.movies);
+
     return (
         <div className="flex flex-col gap-6">
             <div className="space-y-6">
+                {/* Genre */}
                 <div>
-                    <h3 className="text-gray-300 font-semibold text-sm uppercase tracking-wide mb-3">
+                    <h3 className="text-gray-700 dark:text-gray-300 font-semibold text-sm uppercase tracking-wide mb-3 transition-colors duration-300">
                         Genre
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -21,10 +23,10 @@ const Filters = () => {
                             <Button
                                 key={g.id}
                                 variant={filters.genre === g.id ? 'default' : 'outline'}
-                                className={`px-4 py-2 text-xs rounded-lg border border-zinc-700 ${
+                                className={`px-4 py-2 text-xs rounded-lg border border-zinc-700 transition-colors duration-300 ${
                                     filters.genre === g.id
                                         ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                                        : 'bg-zinc-800 text-gray-300 hover:bg-zinc-700'
+                                        : 'bg-zinc-200 dark:bg-zinc-800 text-gray-900 dark:text-gray-300 hover:bg-zinc-300 dark:hover:bg-zinc-700'
                                 }`}
                                 onClick={() => dispatch(setFilter({ key: 'genre', value: g.id }))}
                             >
@@ -34,8 +36,9 @@ const Filters = () => {
                     </div>
                 </div>
 
+                {/* Years */}
                 <div>
-                    <h3 className="text-gray-300 font-semibold text-sm uppercase tracking-wide mb-3">
+                    <h3 className="text-gray-700 dark:text-gray-300 font-semibold text-sm uppercase tracking-wide mb-3 transition-colors duration-300">
                         Years
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -43,10 +46,10 @@ const Filters = () => {
                             <Button
                                 key={decade}
                                 variant={filters.year === decade ? 'default' : 'outline'}
-                                className={`px-4 py-2 text-xs rounded-lg border border-zinc-700 ${
+                                className={`px-4 py-2 text-xs rounded-lg border border-zinc-700 transition-colors duration-300 ${
                                     filters.year === decade
                                         ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                                        : 'bg-zinc-800 text-gray-300 hover:bg-zinc-700'
+                                        : 'bg-zinc-200 dark:bg-zinc-800 text-gray-900 dark:text-gray-300 hover:bg-zinc-300 dark:hover:bg-zinc-700'
                                 }`}
                                 onClick={() => dispatch(setFilter({ key: 'year', value: decade }))}
                             >
@@ -57,6 +60,7 @@ const Filters = () => {
                 </div>
             </div>
 
+            {/* Sorting */}
             <div className="flex flex-col gap-2">
                 {[
                     { key: 'popularity', label: 'Popular' },
@@ -66,10 +70,10 @@ const Filters = () => {
                     <Button
                         key={sort.key}
                         variant={filters.sortBy === sort.key ? 'default' : 'outline'}
-                        className={`w-full px-4 py-2 text-sm rounded-lg border border-zinc-700 ${
+                        className={`w-full px-4 py-2 text-sm rounded-lg border border-zinc-700 transition-colors duration-300 ${
                             filters.sortBy === sort.key
                                 ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                                : 'bg-zinc-800 text-gray-300 hover:bg-zinc-700'
+                                : 'bg-zinc-200 dark:bg-zinc-800 text-gray-900 dark:text-gray-300 hover:bg-zinc-300 dark:hover:bg-zinc-700'
                         }`}
                         onClick={() =>
                             dispatch(setFilter({ key: 'sortBy', value: sort.key as any }))
@@ -82,7 +86,7 @@ const Filters = () => {
                 <Button
                     variant="destructive"
                     onClick={() => dispatch(clearFilters())}
-                    className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg"
+                    className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors duration-300"
                 >
                     Clear Filters
                 </Button>

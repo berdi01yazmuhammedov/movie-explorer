@@ -22,14 +22,14 @@ function App() {
     };
 
     return (
-        <div className="px-6 py-10 min-h-screen flex flex-col items-center">
-            <div className="flex gap-8 items-start w-full max-w-7xl">
-                <aside className="w-[240px] shrink-0 bg-zinc-900 p-5 rounded-xl border border-zinc-800 shadow-lg">
+        <div className="px-4 sm:px-6 py-10 min-h-screen flex flex-col items-center bg-gray-50 dark:bg-zinc-950 transition-colors duration-500">
+            <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl">
+                <aside className="w-full lg:w-[260px] shrink-0 bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-lg transition-all">
                     <Filters />
                 </aside>
 
-                <main className="flex flex-wrap justify-start gap-6 flex-1">
-                    {loading && <div className="text-gray-400">Loading...</div>}
+                <main className="flex flex-wrap justify-center sm:justify-start gap-6 flex-1">
+                    {loading && <div className="text-gray-500 dark:text-gray-400">Loading...</div>}
                     {movies.map((movie: Movie) => (
                         <MovieCard key={movie.id} movie={movie} />
                     ))}
@@ -37,15 +37,16 @@ function App() {
             </div>
 
             {hasMore && (
-                <div className="w-full flex justify-center mt-10">
+                <div className="w-full flex justify-center mt-12">
                     <button
                         onClick={loadMore}
-                        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-md hover:shadow-indigo-500/30 transition-all duration-300"
+                        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-sm dark:shadow-indigo-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? 'Loading...' : 'Load More'}
                     </button>
                 </div>
             )}
+
             {total_pages > 1 && (
                 <div className="mt-10 flex gap-2 justify-center flex-wrap">
                     {Array.from({ length: total_pages }, (_, i) => i + 1)
@@ -61,15 +62,19 @@ function App() {
 
                             return (
                                 <div key={pageNum} className="flex items-center">
-                                    {showDots && <span className="text-gray-500 px-2">...</span>}
+                                    {showDots && (
+                                        <span className="text-gray-400 dark:text-gray-500 px-2">
+                                            ...
+                                        </span>
+                                    )}
                                     <button
                                         onClick={() =>
                                             dispatch(fetchMovies({ query: '', page: pageNum }))
                                         }
-                                        className={`px-4 py-2 rounded-md border text-sm transition-all ${
+                                        className={`px-4 py-2 rounded-md border text-sm transition-all duration-200 ${
                                             page === pageNum
                                                 ? 'bg-indigo-600 text-white border-indigo-600'
-                                                : 'bg-zinc-900 text-gray-300 border-zinc-700 hover:bg-zinc-800'
+                                                : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border-zinc-300 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800'
                                         }`}
                                     >
                                         {pageNum}
