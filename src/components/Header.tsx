@@ -3,11 +3,12 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMovies, setQuery, setSearchValue } from '@/store/movieSlice';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { ThemeToggle } from './ThemeToggle';
 
 const Header = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { searchValue } = useAppSelector((state) => state.movies);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +19,7 @@ const Header = () => {
         e.preventDefault();
         dispatch(setQuery(searchValue));
         dispatch(fetchMovies({ query: searchValue }));
+        navigate("/")
     };
 
     return (
