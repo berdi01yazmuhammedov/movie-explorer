@@ -1,6 +1,6 @@
 import Favorite from '@/components/ui/favorite';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { toggleFavoritePerson } from '@/store/favoritesSlice';
+import { toggleFavoritePerson } from '@/store/slices/favoritesSlice';
 import { Link } from 'react-router-dom';
 
 const FavoriteActors = () => {

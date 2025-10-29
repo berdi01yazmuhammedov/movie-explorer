@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { RootState } from "..";
+import type { RootState } from "../..";
 
 export const selectFilteredMovies = createSelector(
     (state: RootState) => state.movies.result,

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { toggleFavoriteMovie } from '@/store/favoritesSlice';
+import { toggleFavoriteMovie } from '@/store/slices/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import type { Movie } from '@/store/movies/movieSlice';
+import type { Movie } from '@/store/slices/movies/movieSlice';
 import Favorite from './ui/favorite';
 
 interface MovieCardProps {

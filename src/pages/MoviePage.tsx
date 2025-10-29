@@ -1,7 +1,7 @@
 import Cast from "@/components/Cast";
 import MovieVideos from "@/components/MovieVideos";
 import RecommendedMovies from "@/components/RecommendedMovies";
-import { toggleFavoriteMovie } from "@/store/favoritesSlice";
+import { toggleFavoriteMovie } from "@/store/slices/favoritesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   fetchCast,
@@ -9,8 +9,8 @@ import {
   fetchMovieVideos,
   fetchRecommendedMovies,
  
-} from "@/store/movies/thunk";
-import { type Movie} from "@/store/movies/types";
+} from "@/store/slices/movies/thunk";
+import { type Movie} from "@/store/slices/movies/types";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 

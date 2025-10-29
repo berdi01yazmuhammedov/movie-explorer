@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchPersonById } from '@/store/personSlice';
-import { toggleFavoritePerson } from '@/store/favoritesSlice';
+import { fetchPersonById } from '@/store/slices/personSlice';
+import { toggleFavoritePerson } from '@/store/slices/favoritesSlice';
 
 const PersonPage = () => {
     const { id } = useParams<{ id: string }>();

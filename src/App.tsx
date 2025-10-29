@@ -1,7 +1,7 @@
 import MovieCard from './components/MovieCard';
-import { fetchMovies } from './store/movies/thunk';
-import {selectFilteredMovies} from "./store/movies/selectors";
-import {type Movie} from "./store/movies/types";
+import { fetchMovies } from './store/slices/movies/thunk';
+import {selectFilteredMovies} from "./store/slices/movies/selectors";
+import {type Movie} from "./store/slices/movies/types";
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { useEffect } from 'react';
 import Filters from './components/Filters';

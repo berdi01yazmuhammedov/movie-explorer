@@ -1,6 +1,6 @@
 import { Button } from './ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearFilters, setFilter } from '@/store/movies/movieSlice';
+import { clearFilters, setFilter } from '@/store/slices/movies/movieSlice';
 
 const Filters = () => {
     const dispatch = useAppDispatch();
