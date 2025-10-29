@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_URL, options } from './movieSlice';
+import { API_URL, options } from './movies/api';
 
 
 export interface Person {

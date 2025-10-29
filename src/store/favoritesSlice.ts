@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Movie } from './movieSlice';
+import type { Movie } from './movies/movieSlice';
 import type { Person } from './personSlice';
 type SimplePerson = Pick<Person, "id" | "name" | "profile_path">
 interface FavoritesState {

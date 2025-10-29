@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { toggleFavoriteMovie } from '@/store/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import type { Movie } from '@/store/movieSlice';
+import type { Movie } from '@/store/movies/movieSlice';
 import Favorite from './ui/favorite';
 
 interface MovieCardProps {

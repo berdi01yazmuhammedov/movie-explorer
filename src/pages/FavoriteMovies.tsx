@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/store/hooks";
 import MovieCard from "@/components/MovieCard";
-import type { Movie } from "@/store/movieSlice";
+import type { Movie } from "@/store/movies/movieSlice";
 
 const FavoriteMovies = () => {
   const movies = useAppSelector((state) => state.favorites.favoriteMovies);

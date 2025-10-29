@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Input } from './ui/input';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchMovies, setQuery, setSearchValue } from '@/store/movieSlice';
+import {  setQuery, setSearchValue } from '@/store/movies/movieSlice';
+import {fetchMovies} from "@/store/movies/thunk";
 import { Link, useNavigate } from 'react-router';
 import { ThemeToggle } from './ThemeToggle';
 import { Search, X, XCircle } from 'lucide-react';

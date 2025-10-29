@@ -8,8 +8,9 @@ import {
   fetchMovieById,
   fetchMovieVideos,
   fetchRecommendedMovies,
-  type Movie,
-} from "@/store/movieSlice";
+ 
+} from "@/store/movies/thunk";
+import { type Movie} from "@/store/movies/types";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 
