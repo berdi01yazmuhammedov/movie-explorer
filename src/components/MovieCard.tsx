@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import HeartSVG from '../assets/heart.svg';
 import unCheckedHeartSVG from '../assets/uncheckedHeart.svg';
-import { toggleFavorite } from '@/store/favoritesSlice';
+import { toggleFavoriteMovie } from '@/store/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { Movie } from '@/store/movieSlice';
 
@@ -12,12 +12,12 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     const dispatch = useAppDispatch();
-    const favorites = useAppSelector((state) => state.favorites.items);
+    const favorites = useAppSelector((state) => state.favorites.favoriteMovies);
     const isFavorite = favorites.some((favorite) => favorite.id === movie.id);
 
     const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        dispatch(toggleFavorite(movie));
+        dispatch(toggleFavoriteMovie(movie));
     };
 
     return (
@@ -52,11 +52,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 dark:from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-            <h3 className="absolute bottom-3 left-3 right-3 text-sm font-semibold text-gray-900 dark:text-white drop-shadow-md truncate transition-colors duration-300">
+            <h3 className="absolute bottom-3 left-3 right-3 text-sm font-semibold text-gray-100 dark:text-white drop-shadow-md truncate transition-colors duration-300">
                 {movie.title}
             </h3>
 
-            <p className="absolute bottom-0 left-0 right-0 bg-black/80 dark:bg-zinc-900/80 text-gray-900 dark:text-gray-200 text-xs p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <p className="absolute bottom-0 left-0 right-0 bg-black/80 dark:bg-zinc-900/80 text-gray-100 dark:text-gray-200 text-xs p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 {movie.overview.slice(0, 100).trim().concat('...')}
             </p>
         </Link>

@@ -2,8 +2,8 @@ import { useAppSelector } from "@/store/hooks";
 import MovieCard from "@/components/MovieCard";
 import type { Movie } from "@/store/movieSlice";
 
-const Favorites = () => {
-  const movies = useAppSelector((state) => state.favorites.items);
+const FavoriteMovies = () => {
+  const movies = useAppSelector((state) => state.favorites.favoriteMovies);
 
   if (movies.length === 0) {
     return (
@@ -16,7 +16,7 @@ const Favorites = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 transition-colors duration-500 bg-gray-50 dark:bg-zinc-950 min-h-screen">
       <h2 className="text-3xl font-bold mb-10 text-center text-zinc-900 dark:text-gray-100 tracking-wide">
-        Your Favorites
+        Your Favorite Movies
       </h2>
 
       <div className="flex flex-wrap justify-center sm:justify-start gap-6">
@@ -28,4 +28,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default FavoriteMovies;

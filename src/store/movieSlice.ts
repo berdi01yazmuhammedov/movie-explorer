@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '.';
-const options = {
+export const API_URL = 'https://api.themoviedb.org/3';
+export const options = {
     method: 'GET',
     headers: {
         accept: 'application/json',
@@ -17,9 +18,9 @@ export const fetchMovies = createAsyncThunk(
             let url = '';
             if (query) {
                 params.append('query', query);
-                url = `https://api.themoviedb.org/3/search/movie?${params.toString()}`;
+                url = `${API_URL}/search/movie?${params.toString()}`;
             } else {
-                url = `https://api.themoviedb.org/3/discover/movie?sort_by=release_date.desc&${params.toString()}`;
+                url = `${API_URL}/discover/movie?sort_by=release_date.desc&${params.toString()}`;
             }
 
             const res = await fetch(url, options);
@@ -72,7 +73,7 @@ export const fetchMovieById = createAsyncThunk(
     'movies/fetchMovieById',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options);
+            const res = await fetch(`${API_URL}/movie/${id}`, options);
             if (!res.ok) throw new Error('Failed to fetch movie');
             const data = await res.json();
             return data;
@@ -86,7 +87,7 @@ export const fetchCast = createAsyncThunk(
     'movies/fetchCast',
     async ({ id }: { id: Number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, options);
+            const res = await fetch(`${API_URL}/movie/${id}/credits`, options);
             if (!res.ok) throw new Error('Failed to fetch cast');
             const data = await res.json();
             return data.cast;
@@ -101,7 +102,7 @@ export const fetchRecommendedMovies = createAsyncThunk(
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
             const res = await fetch(
-                `https://api.themoviedb.org/3/movie/${id}/recommendations`,
+                `${API_URL}/movie/${id}/recommendations`,
                 options
             );
             if (!res.ok) throw new Error('Failed to fetch recommended movies');
@@ -118,7 +119,7 @@ export const fetchMovieVideos = createAsyncThunk(
     'movies/fetchMovieVideos',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos`, options);
+            const res = await fetch(`${API_URL}/movie/${id}/videos`, options);
             if (!res.ok) throw new Error('Failed to fetch videos for the movie');
             const data = await res.json();
             return data.results;

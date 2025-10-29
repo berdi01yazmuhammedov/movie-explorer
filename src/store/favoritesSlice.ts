@@ -1,8 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Movie } from './movieSlice';
+import type { Person } from './personSlice';
 
 interface FavoritesState {
-    items: Movie[];
+    favoriteMovies: Movie[];
+    favoritePersons: Person[];
 }
 
 const loadFavorites = (): Movie[] => {
@@ -15,27 +17,47 @@ const loadFavorites = (): Movie[] => {
 };
 
 const initialState: FavoritesState = {
-    items: loadFavorites(),
+    favoriteMovies: loadFavorites(),
+    favoritePersons: [],
 };
 const favoritesSlice = createSlice({
     name: 'favorites',
     initialState,
     reducers: {
-        toggleFavorite: (state, action: PayloadAction<Movie>) => {
-            const existing = state.items.find((m) => m.id === action.payload.id);
+        toggleFavoriteMovie: (state, action: PayloadAction<Movie>) => {
+            const existing = state.favoriteMovies.find((m) => m.id === action.payload.id);
             if (existing) {
-                state.items = state.items.filter((m) => m.id !== action.payload.id);
+                state.favoriteMovies = state.favoriteMovies.filter(
+                    (m) => m.id !== action.payload.id
+                );
             } else {
-                state.items.push(action.payload);
+                state.favoriteMovies.push(action.payload);
             }
-            localStorage.setItem('favorites', JSON.stringify(state.items));
+            localStorage.setItem('favorites', JSON.stringify(state.favoriteMovies));
         },
-        clearFavorites: (state) => {
-            state.items = [];
+        clearFavoriteMovies: (state) => {
+            state.favoriteMovies = [];
+            localStorage.removeItem('favorites');
+        },
+
+
+        toggleFavoritePerson: (state, action: PayloadAction<Person>) => {
+            const existing = state.favoritePersons.find((p) => p.id === action.payload.id);
+            if (existing) {
+                state.favoritePersons = state.favoritePersons.filter(
+                    (p) => p.id !== action.payload.id
+                );
+            } else {
+                state.favoritePersons.push(action.payload);
+            }
+            localStorage.setItem('favorites', JSON.stringify(state.favoritePersons));
+        },
+        clearFavoritePersons: (state) => {
+            state.favoritePersons = [];
             localStorage.removeItem('favorites');
         },
     },
 });
 
-export const { toggleFavorite } = favoritesSlice.actions;
+export const { toggleFavoriteMovie, clearFavoriteMovies, toggleFavoritePerson, clearFavoritePersons } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

@@ -23,12 +23,12 @@ function App() {
 
     return (
         <div className="px-4 sm:px-6 py-10 min-h-screen flex flex-col items-center bg-gray-50 dark:bg-zinc-950 transition-colors duration-500">
-            <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl">
-                <aside className="w-full lg:w-[260px] shrink-0 bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-lg transition-all">
+            <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl items-start lg:items-stretch">
+                <aside className="w-full sm:max-w-md lg:max-w-[260px] h-fit mx-auto lg:mx-0 bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-lg transition-all">
                     <Filters />
                 </aside>
 
-                <main className="flex flex-wrap justify-center sm:justify-start gap-6 flex-1">
+                <main className="flex flex-wrap justify-center lg:justify-start gap-6 flex-1 w-full">
                     {loading && <div className="text-gray-500 dark:text-gray-400">Loading...</div>}
                     {movies.map((movie: Movie) => (
                         <MovieCard key={movie.id} movie={movie} />

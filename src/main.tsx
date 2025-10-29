@@ -6,7 +6,8 @@ import MoviePage from './pages/MoviePage.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/index.ts';
 import Layout from './components/Layout.tsx';
-import Favorites from './pages/Favorites.tsx';
+import FavoriteMovies from './pages/FavoriteMovies.tsx';
+import PersonPage from './pages/PersonPage.tsx';
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
         <BrowserRouter>
@@ -14,7 +15,8 @@ createRoot(document.getElementById('root')!).render(
                 <Route element={<Layout />}>
                     <Route path="/" element={<App />} />
                     <Route path="/movie/:id" element={<MoviePage />} />
-                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/favoritemovies" element={<FavoriteMovies />} />
+                    <Route path="/person/:id" element={<PersonPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
