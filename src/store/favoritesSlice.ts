@@ -1,24 +1,17 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Movie } from './movies/movieSlice';
+import type { Movie } from './movies/types';
 import type { Person } from './personSlice';
+import { loadFromStorage, saveToStorage } from './utils/localstorage';
 type SimplePerson = Pick<Person, "id" | "name" | "profile_path">
 interface FavoritesState {
     favoriteMovies: Movie[];
     favoritePersons: SimplePerson[];
 }
 
-const loadFavorites = <T>(key: string): T[] => {
-    try {
-        const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : [];
-    } catch {
-        return [];
-    }
-};
 
 const initialState: FavoritesState = {
-    favoriteMovies: loadFavorites<Movie>("favoriteMovies"),
-    favoritePersons: loadFavorites<Person>("favoritePersons"),
+    favoriteMovies: loadFromStorage<Movie>("favoriteMovies"),
+    favoritePersons: loadFromStorage<Person>("favoritePersons"),
 };
 const favoritesSlice = createSlice({
     name: 'favorites',
@@ -33,7 +26,7 @@ const favoritesSlice = createSlice({
             } else {
                 state.favoriteMovies.push(action.payload);
             }
-            localStorage.setItem('favoriteMovies', JSON.stringify(state.favoriteMovies));
+            saveToStorage('favoriteMovies', state.favoriteMovies);
         },
         clearFavoriteMovies: (state) => {
             state.favoriteMovies = [];
@@ -50,7 +43,7 @@ const favoritesSlice = createSlice({
             } else {
                 state.favoritePersons.push(action.payload);
             }
-            localStorage.setItem('favoritePersons', JSON.stringify(state.favoritePersons));
+            saveToStorage('favoriteMovies', state.favoriteMovies);
         },
         clearFavoritePersons: (state) => {
             state.favoritePersons = [];
