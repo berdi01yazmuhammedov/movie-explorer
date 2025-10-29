@@ -20,6 +20,7 @@ const RecommendedMovies = () => {
                         <Link
                             to={`/movie/${movie.id}`}
                             key={movie.id}
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                             className="w-40 sm:w-48 md:w-56 flex flex-col items-center text-center bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-md dark:shadow-black/50 hover:shadow-lg hover:scale-105 transition-all duration-300 overflow-hidden"
                         >
                             <img

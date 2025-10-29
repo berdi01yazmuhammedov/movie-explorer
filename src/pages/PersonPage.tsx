@@ -25,10 +25,10 @@ const PersonPage = () => {
     return (
         <div className="relative bg-zinc-950 min-h-screen text-white flex items-center justify-center px-4 py-10">
             <div className="bg-zinc-900 p-6 rounded-2xl max-w-3xl w-full my-0 mx-auto sm:mx-8 overflow-y-auto">
-                <div className="flex items-center gap-3 mt-3">
+                <div className="flex items-center gap-3">
                     <button
                         onClick={onClickFavoritePerson}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        className={`px-4 mb-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                             isFavorite
                                 ? 'bg-red-500 hover:bg-red-700 text-white'
                                 : 'bg-zinc-700 hover:bg-zinc-600 text-gray-200'
