@@ -6,14 +6,16 @@ import Filters from './components/Filters';
 
 function App() {
     const dispatch = useAppDispatch();
-    const { page, hasMore, loading, total_pages } = useAppSelector((state) => state.movies);
+    const { query, isSearching, page, hasMore, loading, total_pages } = useAppSelector(
+        (state) => state.movies
+    );
     const movies = useAppSelector(selectFilteredMovies);
 
     useEffect(() => {
-        if (!movies.length) {
+        if (!isSearching && !movies.length) {
             dispatch(fetchMovies({ query: '' }));
         }
-    }, [dispatch, movies.length]);
+    }, [dispatch, movies.length, isSearching]);
 
     const loadMore = () => {
         if (!loading && hasMore) {
@@ -30,6 +32,16 @@ function App() {
 
                 <main className="flex flex-wrap justify-center lg:justify-start gap-6 flex-1 w-full">
                     {loading && <div className="text-gray-500 dark:text-gray-400">Loading...</div>}
+
+                    {!loading && movies.length === 0 && isSearching && (
+                        <div className="py-10">
+                            <p className="text-gray-500 dark:text-gray-400">
+                                No results found for “{query}”
+                            </p>
+                            <p className='mt-4'>Try another movie name.</p>
+                        </div>
+                    )}
+
                     {movies.map((movie: Movie) => (
                         <MovieCard key={movie.id} movie={movie} />
                     ))}

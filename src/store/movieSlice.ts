@@ -15,23 +15,29 @@ export const fetchMovies = createAsyncThunk(
         try {
             const params = new URLSearchParams();
             params.append('page', page.toString());
+
             let url = '';
             if (query) {
                 params.append('query', query);
                 url = `${API_URL}/search/movie?${params.toString()}`;
             } else {
-                url = `${API_URL}/discover/movie?sort_by=release_date.desc&${params.toString()}`;
+                url = `${API_URL}/trending/movie/week?${params.toString()}`;
             }
 
             const res = await fetch(url, options);
             if (!res.ok) throw new Error('Failed to fetch movies');
             const data = await res.json();
+
+            if (query && (!data.results || data.results.length === 0)) {
+                return { results: [], page: 1, total_pages: 1 };
+            }
+
             return {
                 results: data.results,
                 page: data.page,
                 total_pages: data.total_pages,
             };
-        } catch (error: string | any) {
+        } catch (error: any) {
             return rejectWithValue(error.message);
         }
     }
@@ -101,10 +107,7 @@ export const fetchRecommendedMovies = createAsyncThunk(
     'movies/fetchRecommendedMovies',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(
-                `${API_URL}/movie/${id}/recommendations`,
-                options
-            );
+            const res = await fetch(`${API_URL}/movie/${id}/recommendations`, options);
             if (!res.ok) throw new Error('Failed to fetch recommended movies');
             const data = await res.json();
             return data.results;
@@ -245,6 +248,7 @@ export interface MovieVideos {
 interface initialState {
     searchValue: string;
     query: string;
+    isSearching: boolean;
     result: Movie[];
     currentMovie: CurrentMovie | null;
     cast: Cast[];
@@ -260,6 +264,7 @@ interface initialState {
 const initialState: initialState = {
     searchValue: '',
     query: '',
+    isSearching: false,
     result: [],
     currentMovie: null,
     cast: [],
@@ -286,6 +291,7 @@ const movieSlice = createSlice({
         },
         setQuery(state, action) {
             state.query = action.payload;
+            state.isSearching = !!action.payload.trim();
         },
         setResult(state, action) {
             state.result = action.payload;
