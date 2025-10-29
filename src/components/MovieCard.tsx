@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import HeartSVG from '../assets/heart.svg';
-import unCheckedHeartSVG from '../assets/uncheckedHeart.svg';
+
 import { toggleFavoriteMovie } from '@/store/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { Movie } from '@/store/movieSlice';
+import Favorite from './ui/favorite';
 
 interface MovieCardProps {
     movie: Movie;
@@ -25,24 +25,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             to={`/movie/${movie.id}`}
             className="group relative rounded-xl overflow-hidden w-[220px] h-[330px] bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 shadow-md hover:shadow-indigo-500/20 hover:scale-[1.03] transition-all duration-300 cursor-pointer"
         >
-            <button
-                onClick={onClickFavorite}
-                className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center
-                backdrop-blur-md border transition-all duration-200
-                ${
-                    isFavorite
-                        ? 'bg-red-200/30 dark:bg-red-500/20 border-red-300 shadow-lg shadow-red-500/30 hover:bg-red-500 dark:hover:bg-red-600'
-                        : 'bg-zinc-800/70 dark:bg-zinc-200/30 border-zinc-700 dark:border-zinc-500 hover:bg-zinc-700/80 dark:hover:bg-zinc-400/50'
-                }`}
-            >
-                <img
-                    src={isFavorite ? HeartSVG : unCheckedHeartSVG}
-                    alt="favorite"
-                    className={`w-4 h-4 ${
-                        isFavorite ? 'brightness-110' : 'opacity-80'
-                    } transition-all`}
-                />
-            </button>
+            <Favorite onClickFavorite={onClickFavorite} isFavorite={isFavorite} />
 
             <img
                 src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}

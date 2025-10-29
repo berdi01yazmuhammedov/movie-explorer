@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/index.ts';
 import Layout from './components/Layout.tsx';
 import FavoriteMovies from './pages/FavoriteMovies.tsx';
+import FavoriteActors from './pages/FavoriteActors.tsx';
 import PersonPage from './pages/PersonPage.tsx';
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
                     <Route path="/" element={<App />} />
                     <Route path="/movie/:id" element={<MoviePage />} />
                     <Route path="/favoritemovies" element={<FavoriteMovies />} />
+                    <Route path="/favoriteactors" element={<FavoriteActors />} />
                     <Route path="/person/:id" element={<PersonPage />} />
                 </Route>
             </Routes>

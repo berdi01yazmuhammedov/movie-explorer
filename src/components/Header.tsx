@@ -60,7 +60,13 @@ const Header = () => {
                         to="/favoritemovies"
                         className="text-gray-900 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
                     >
-                        Favorites
+                        Favorite Movies
+                    </Link>
+                    <Link
+                        to="/favoriteactors"
+                        className="text-gray-900 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
+                    >
+                        Favorite Actors
                     </Link>
                     <ThemeToggle />
                     <button

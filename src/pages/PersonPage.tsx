@@ -10,10 +10,10 @@ const PersonPage = () => {
 
     const person = useAppSelector((state) => state.person.currentPerson);
     const favorites = useAppSelector((state) => state.favorites.favoritePersons);
-    const isFavorite = favorites.some((person) => person.id === person.id);
+    const isFavorite = person ? favorites.some((fav) => fav.id === person.id) : false;
     useEffect(() => {
         if (id) dispatch(fetchPersonById({ id: Number(id) }));
-    }, [id]);
+    }, [id, dispatch]);
 
     if (!person)
         return (
@@ -30,7 +30,7 @@ const PersonPage = () => {
                         onClick={onClickFavoritePerson}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                             isFavorite
-                                ? 'bg-red-600 hover:bg-red-700 text-white'
+                                ? 'bg-red-500 hover:bg-red-700 text-white'
                                 : 'bg-zinc-700 hover:bg-zinc-600 text-gray-200'
                         }`}
                     >

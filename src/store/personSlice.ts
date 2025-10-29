@@ -19,13 +19,13 @@ export interface Person {
 }
 
 
-interface PersonState {
+interface personState {
   currentPerson: Person | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
-const initialState: PersonState = {
+const initialState: personState = {
   currentPerson: null,
   status: 'idle',
   error: null,

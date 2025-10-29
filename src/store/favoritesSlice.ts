@@ -1,15 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Movie } from './movieSlice';
 import type { Person } from './personSlice';
-
+type SimplePerson = Pick<Person, "id" | "name" | "profile_path">
 interface FavoritesState {
     favoriteMovies: Movie[];
-    favoritePersons: Person[];
+    favoritePersons: SimplePerson[];
 }
 
-const loadFavorites = (): Movie[] => {
+const loadFavorites = <T>(key: string): T[] => {
     try {
-        const stored = localStorage.getItem('favorites');
+        const stored = localStorage.getItem(key);
         return stored ? JSON.parse(stored) : [];
     } catch {
         return [];
@@ -17,8 +17,8 @@ const loadFavorites = (): Movie[] => {
 };
 
 const initialState: FavoritesState = {
-    favoriteMovies: loadFavorites(),
-    favoritePersons: [],
+    favoriteMovies: loadFavorites<Movie>("favoriteMovies"),
+    favoritePersons: loadFavorites<Person>("favoritePersons"),
 };
 const favoritesSlice = createSlice({
     name: 'favorites',
@@ -33,15 +33,15 @@ const favoritesSlice = createSlice({
             } else {
                 state.favoriteMovies.push(action.payload);
             }
-            localStorage.setItem('favorites', JSON.stringify(state.favoriteMovies));
+            localStorage.setItem('favoriteMovies', JSON.stringify(state.favoriteMovies));
         },
         clearFavoriteMovies: (state) => {
             state.favoriteMovies = [];
-            localStorage.removeItem('favorites');
+            localStorage.removeItem('favoriteMovies');
         },
 
 
-        toggleFavoritePerson: (state, action: PayloadAction<Person>) => {
+        toggleFavoritePerson: (state, action: PayloadAction<SimplePerson>) => {
             const existing = state.favoritePersons.find((p) => p.id === action.payload.id);
             if (existing) {
                 state.favoritePersons = state.favoritePersons.filter(
@@ -50,11 +50,11 @@ const favoritesSlice = createSlice({
             } else {
                 state.favoritePersons.push(action.payload);
             }
-            localStorage.setItem('favorites', JSON.stringify(state.favoritePersons));
+            localStorage.setItem('favoritePersons', JSON.stringify(state.favoritePersons));
         },
         clearFavoritePersons: (state) => {
             state.favoritePersons = [];
-            localStorage.removeItem('favorites');
+            localStorage.removeItem('favoritePersons');
         },
     },
 });
