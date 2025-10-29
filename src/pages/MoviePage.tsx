@@ -1,12 +1,14 @@
 import Cast from "@/components/Cast";
 import MovieVideos from "@/components/MovieVideos";
 import RecommendedMovies from "@/components/RecommendedMovies";
+import { toggleFavoriteMovie } from "@/store/favoritesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   fetchCast,
   fetchMovieById,
   fetchMovieVideos,
   fetchRecommendedMovies,
+  type Movie,
 } from "@/store/movieSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -15,6 +17,11 @@ const MoviePage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const movie = useAppSelector((state) => state.movies.currentMovie);
+
+  // Проверяем, есть ли фильм в избранном
+  const isFavorite = useAppSelector((state) =>
+    state.favorites.favoriteMovies.some((fav) => fav.id === movie?.id)
+  );
 
   useEffect(() => {
     if (!movie || movie.id !== Number(id)) {
@@ -32,9 +39,44 @@ const MoviePage = () => {
       </div>
     );
 
+ const onClickFavoriteMovie = () => {
+  if (!movie) return;
+
+  const movieForFavorites: Movie = {
+    id: movie.id,
+    title: movie.title,
+    original_title: movie.original_title,
+    overview: movie.overview,
+    poster_path: movie.poster_path || "",
+    backdrop_path: movie.backdrop_path || "",
+    release_date: movie.release_date,
+    vote_average: movie.vote_average,
+    vote_count: movie.vote_count,
+    popularity: movie.popularity,
+    adult: movie.adult,
+    video: movie.video,
+    genre_ids: movie.genres.map((g) => g.id),
+    original_language: movie.original_language,
+  };
+
+  dispatch(toggleFavoriteMovie(movieForFavorites));
+};
+
+
   return (
     <div className="relative bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
       <div className="relative w-full min-h-[80vh] flex items-center">
+        <button
+          onClick={onClickFavoriteMovie}
+          className={`absolute top-6 right-6 px-4 py-2 rounded-lg text-sm font-medium transition-colors z-20 ${
+            isFavorite
+              ? "bg-red-500 hover:bg-red-700 text-white"
+              : "bg-zinc-700 hover:bg-zinc-600 text-gray-200"
+          }`}
+        >
+          {isFavorite ? "★ In Favorites" : "☆ Add to Favorites"}
+        </button>
+
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
@@ -77,33 +119,6 @@ const MoviePage = () => {
         <RecommendedMovies />
         <MovieVideos />
       </div>
-
-      <div className="relative z-10 mt-16 max-w-6xl mx-auto p-4 sm:p-6">
-        <h3 className="text-2xl font-semibold mb-4 text-center text-gray-900 dark:text-white transition-colors duration-300">
-          Production Companies
-        </h3>
-        {movie.production_companies.length === 0 ? (
-          <p className="text-center text-gray-500 dark:text-gray-400">
-            No production companies found.
-          </p>
-        ) : (
-          <div className="flex gap-4 flex-wrap justify-center bg-white/20 dark:bg-gray-900/50 p-4 rounded-lg shadow-md dark:shadow-black/50 transition-colors duration-300">
-            {movie.production_companies.map(
-              (company) =>
-                company.logo_path && (
-                  <img
-                    key={company.id}
-                    src={`https://image.tmdb.org/t/p/w200/${company.logo_path}`}
-                    alt={company.name}
-                    className="max-h-12 sm:max-h-16 object-contain"
-                  />
-                )
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/80 dark:from-black/90 pointer-events-none z-0"></div>
     </div>
   );
 };
