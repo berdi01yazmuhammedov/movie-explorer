@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '.';
 export const API_URL = 'https://api.themoviedb.org/3';
+const userLang = navigator.language || 'en-US';
 export const options = {
     method: 'GET',
     headers: {
@@ -14,6 +15,7 @@ export const fetchMovies = createAsyncThunk(
     async ({ query, page = 1 }: { query: string; page?: number }, { rejectWithValue }) => {
         try {
             const params = new URLSearchParams();
+            params.append('language', userLang);
             params.append('page', page.toString());
 
             let url = '';
@@ -79,7 +81,7 @@ export const fetchMovieById = createAsyncThunk(
     'movies/fetchMovieById',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`${API_URL}/movie/${id}`, options);
+            const res = await fetch(`${API_URL}/movie/${id}?language=${userLang}`, options);
             if (!res.ok) throw new Error('Failed to fetch movie');
             const data = await res.json();
             return data;
@@ -107,7 +109,11 @@ export const fetchRecommendedMovies = createAsyncThunk(
     'movies/fetchRecommendedMovies',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`${API_URL}/movie/${id}/recommendations`, options);
+            const res = await fetch(
+                `${API_URL}/movie/${id}/recommendations?language=${userLang}`,
+                options
+            );
+
             if (!res.ok) throw new Error('Failed to fetch recommended movies');
             const data = await res.json();
             return data.results;
@@ -122,7 +128,8 @@ export const fetchMovieVideos = createAsyncThunk(
     'movies/fetchMovieVideos',
     async ({ id }: { id: number }, { rejectWithValue }) => {
         try {
-            const res = await fetch(`${API_URL}/movie/${id}/videos`, options);
+            const res = await fetch(`${API_URL}/movie/${id}/videos?language=${userLang}`, options);
+
             if (!res.ok) throw new Error('Failed to fetch videos for the movie');
             const data = await res.json();
             return data.results;
