@@ -22,7 +22,7 @@ const PersonPage = () => {
         dispatch(toggleFavoritePerson(person));
     };
     return (
-        <div className="relative bg-zinc-950 min-h-screen text-white flex items-center justify-center px-4 py-10">
+        <div>
             <PersonDetails
                 person={person}
                 isFavorite={isFavorite}
