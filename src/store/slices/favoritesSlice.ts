@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Movie } from './movies/types';
 import type { Person } from './personSlice';
 import { loadFromStorage, saveToStorage } from '../utils/localstorage';
-type SimplePerson = Pick<Person, "id" | "name" | "profile_path">
+export type SimplePerson = Pick<Person, "id" | "name" | "profile_path">
 interface FavoritesState {
     favoriteMovies: Movie[];
     favoritePersons: SimplePerson[];

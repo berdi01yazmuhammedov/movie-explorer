@@ -3,6 +3,7 @@ export type  Filters = {
     year: string | null;
     sortBy: 'popularity' | 'rating' | 'release_date' | null;
 }
+
 export interface Movie {
     adult: boolean;
     backdrop_path: string;
@@ -126,4 +127,11 @@ export interface initialState {
     page: number;
     total_pages: number;
     hasMore: boolean;
+}
+
+export interface PaginatedResponse<T> {
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
 }

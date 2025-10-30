@@ -1,6 +1,6 @@
 import Favorite from '@/components/ui/favorite';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { toggleFavoritePerson } from '@/store/slices/favoritesSlice';
+import { toggleFavoritePerson, type SimplePerson } from '@/store/slices/favoritesSlice';
 import { Link } from 'react-router-dom';
 
 const FavoriteActors = () => {
@@ -14,7 +14,7 @@ const FavoriteActors = () => {
       </div>
     );
 
-  const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>, actor: any) => {
+  const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>, actor: SimplePerson) => {
     e.preventDefault();
     dispatch(toggleFavoritePerson(actor));
   };

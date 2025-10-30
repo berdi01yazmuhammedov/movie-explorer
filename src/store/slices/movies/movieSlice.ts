@@ -58,7 +58,9 @@ const movieSlice = createSlice({
             >
         ) => {
             const { key, value } = action.payload;
-            state.filters[key] = value as any;
+            if (key === "genre") state.filters.genre = value;
+            else if (key === "year") state.filters.year = value;
+            else if(key === "sortBy") state.filters.sortBy = value;
         },
         clearFilters(state) {
             state.filters = {
