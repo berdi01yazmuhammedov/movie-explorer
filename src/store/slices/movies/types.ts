@@ -19,6 +19,7 @@ export interface Movie {
     vote_average: number;
     vote_count: number;
 }
+
 export interface CurrentMovie {
     adult: boolean;
     backdrop_path: string;
