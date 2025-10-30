@@ -9,7 +9,6 @@ import {
     fetchMovieVideos,
     fetchRecommendedMovies,
 } from '@/store/slices/movies/thunk';
-import { type Movie } from '@/store/slices/movies/types';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import MovieDetails from '@/components/MovieDetails';
