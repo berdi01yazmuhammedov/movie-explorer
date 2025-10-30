@@ -1,7 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { Filters, initialState } from './types';
-import { fetchCast, fetchMovieById, fetchMovies, fetchMovieVideos, fetchRecommendedMovies } from './thunk';
-
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type {  initialState } from './types';
+import {
+    fetchCast,
+    fetchMovieById,
+    fetchMovies,
+    fetchMovieVideos,
+    fetchRecommendedMovies,
+} from './thunk';
 
 const initialState: initialState = {
     searchValue: '',
@@ -44,16 +49,16 @@ const movieSlice = createSlice({
         setError(state, action) {
             state.error = action.payload;
         },
-        setFilter<K extends keyof Filters>(
-            state: initialState,
-            action: { payload: { key: K; value: Filters[K] } }
-        ) {
+        setFilter: (
+            state,
+            action: PayloadAction<
+                | { key: 'genre'; value: number | null }
+                | { key: 'year'; value: string | null }
+                | { key: 'sortBy'; value: 'popularity' | 'release_date' | 'rating' }
+            >
+        ) => {
             const { key, value } = action.payload;
-            if (state.filters[key] === value) {
-                state.filters[key] = null as Filters[K];
-            } else {
-                state.filters[key] = value;
-            }
+            state.filters[key] = value as any;
         },
         clearFilters(state) {
             state.filters = {

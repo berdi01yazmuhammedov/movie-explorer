@@ -5,6 +5,11 @@ import { clearFilters, setFilter } from '@/store/slices/movies/movieSlice';
 const Filters = () => {
     const dispatch = useAppDispatch();
     const { filters } = useAppSelector((state) => state.movies);
+    const sortOptions = [
+        { key: 'popularity', label: 'Popular' },
+        { key: 'release_date', label: 'New' },
+        { key: 'rating', label: 'Top Rated' },
+    ] as const;
 
     return (
         <div className="flex flex-col gap-6">
@@ -62,11 +67,7 @@ const Filters = () => {
 
             {/* Sorting */}
             <div className="flex flex-col gap-2">
-                {[
-                    { key: 'popularity', label: 'Popular' },
-                    { key: 'release_date', label: 'New' },
-                    { key: 'rating', label: 'Top Rated' },
-                ].map((sort) => (
+                {sortOptions.map((sort) => (
                     <Button
                         key={sort.key}
                         variant={filters.sortBy === sort.key ? 'default' : 'outline'}
@@ -75,9 +76,7 @@ const Filters = () => {
                                 ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                                 : 'bg-zinc-200 dark:bg-zinc-800 text-gray-900 dark:text-gray-300 hover:bg-zinc-300 dark:hover:bg-zinc-700'
                         }`}
-                        onClick={() =>
-                            dispatch(setFilter({ key: 'sortBy', value: sort.key as any }))
-                        }
+                        onClick={() => dispatch(setFilter({ key: 'sortBy', value: sort.key }))}
                     >
                         {sort.label}
                     </Button>

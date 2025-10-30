@@ -1,4 +1,4 @@
-export interface Filters {
+export type  Filters = {
     genre: number | null;
     year: string | null;
     sortBy: 'popularity' | 'rating' | 'release_date' | null;
