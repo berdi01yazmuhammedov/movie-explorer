@@ -21,3 +21,12 @@ A modern React + TypeScript web app for browsing movies and actors using the TMD
 git clone https://github.com/yourusername/movie-explorer.git
 cd movie-explorer
 npm install
+```
+## Create .env file:
+VITE_TMDB_API_KEY=your_tmdb_api_key
+
+## Run locally:
+```bash
+npm run dev
+```
+
